@@ -366,8 +366,8 @@
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:41px 55px 18px;font-family:'Cabin',sans-serif;" align="left">
 
                                                             <div style="font-size: 14px; color: #003399; line-height: 160%; text-align: center; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 160%;"><a target="_blank" href="https://github.com/JAVI-CC/laravel-api-listado-compras" rel="noopener"><span style="font-size: 20px; line-height: 32px;"><strong>GitHub</strong></span></a></p>
-                                                                <p style="font-size: 14px; line-height: 160%;"><a href="https://github.com/JAVI-CC/laravel-api-listado-compras">https://github.com/JAVI-CC/laravel-api-listado-compras</a></p>
+                                                                <p style="font-size: 14px; line-height: 160%;"><a target="_blank" href="https://github.com/JAVI-CC/laravel-api-crud-template" rel="noopener"><span style="font-size: 20px; line-height: 32px;"><strong>GitHub</strong></span></a></p>
+                                                                <p style="font-size: 14px; line-height: 160%;"><a href="https://github.com/JAVI-CC/laravel-api-crud-template">https://github.com/JAVI-CC/laravel-api-crud-template</a></p>
                                                             </div>
 
                                                         </td>
