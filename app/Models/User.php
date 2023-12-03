@@ -3,14 +3,24 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasUuids, Notifiable, SoftDeletes;
+
+    const CACHE_KEY = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +28,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nombre',
+        'apellidos',
         'email',
         'password',
+        'email_verified_at',
+        'rol_id',
     ];
 
     /**
@@ -42,4 +55,66 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //Relacion uno a muchos (inversa)
+    public function rol(): BelongsTo
+    {
+        return $this->belongsTo(Rol::class);
+    }
+    //Fin Relacion uno a muchos (inversa)
+
+    //Attributes
+    protected function nombreCompleto(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->nombre . ' ' . $this->apellidos,
+        );
+    }
+
+    protected function isAdmin(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rol->id === Rol::ADMIN_ID,
+        );
+    }
+
+    protected function isEmailVerified(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->email_verified_at ? true : false,
+        );
+    }
+    //Fin Attributes
+
+    /**
+     * The channels the user receives notification broadcasts on.
+     */
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'users.' . $this->id;
+    }
+
+    //Funciones
+    public static function findByEmail(string $email): User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    public static function countAdmins(): int
+    {
+        return self::where('rol_id', ROL::ADMIN_ID)->count();
+    }
+
+    public static function getAllUsers(): Collection
+    {
+        return Cache::remember(User::CACHE_KEY, now()->addDay(), function () {
+            return User::With(['rol'])->orderBy('nombre')->get();
+        });
+    }
+
+    public function generateToken()
+    {
+        return 'Bearer ' . $this->createToken(config('app.name'))->plainTextToken;
+    }
+    //Fin Funciones
 }

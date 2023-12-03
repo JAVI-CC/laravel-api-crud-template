@@ -1,66 +1,249 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<span>Application made with Laravel 10 that consists of the creation of a CRUD of a user and system authentication api that contains the following functionalities:</span>
+<ul>
+  <li>Relationships between different models.</li>
+  <li>Primary key format UUID.</li>
+  <li>Contains endpoints of type GET, POST, PUT and DELETE</li>
+  <li>Postman collection.json file to import and create use endpoints.</li>
+  <li>Requests validations.</li>
+  <li>Exception handling.</li>
+  <li>Feature testing.</li>
+  <li>Email sending Notification to recovery password.</li>
+  <li>Email sending notification to verify the user.</li>
+  <li>Factories.</li>
+  <li>Traits.</li>
+  <li>Middleware.</li>
+  <li>Policies.</li>
+  <li>Observers.</li>
+  <li>Cached data</li>
+  <li>Notifications with broadcast.</li>
+  <li>Exports in Excel and PDF format.</li>
+  <li>Blade Email Templates.</li>
+  <li>Multi language support.</li>
+  <li>Migration file to create all the tables in the database.</li>
+  <li>Seeders are in JSON format.</li>
+  <li>PHP 8.2.*</li>
+  <li>Search filters of the games that are inserted in the database.</li>
+  <li>Websockets with Pusher.</li>
+  <li>Users contain different roles and permissions.</li>
+  <li>The project contains the files to deploy it in Docker.</li> 
+</ul> 
 
-## About Laravel
+<h3>Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>{Token provided by Sanctum}</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>application/json</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<h3>Setup</h3>
+<pre>
+<code>$ composer install && php artisan key:generate && php artisan migrate --seed && php artisan test</code>
+</pre>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<hr>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<h3>Endpoints Auth:</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Auth</th>
+<th>Is Admin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>/api/auth/login</td>
+<td>Login a user</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/auth/check</td>
+<td>Check if user authenticated</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/auth/logout</td>
+<td>Log out a user</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/auth/change/password</td>
+<td>Change the password for the authenticated user</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/auth/recovery/password</td>
+<td>An email is sent to reset the password</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/user/verification/email/notification</td>
+<td>Sending an email to confirm the verification of the authenticated user</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/user/verification/email/{id}/{hash}</td>
+<td>Verify authenticated user</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
 
-## Learning Laravel
+<h3>Endpoints Users:</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Auth</th>
+<th>Is Admin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/api/user</td>
+<td>Get all the users</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/user/{id}</td>
+<td>Get a user</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/user</td>
+<td>Add new user</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/user/{id}</td>
+<td>Update a user</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/user/{id}</td>
+<td>Delete a user</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/user/export/excel</td>
+<td>Export all users in Excel format</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/user/export/pdf</td>
+<td>Export all users in Pdf format</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<br>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<h2>Configure values in the .env file</h2>
+<pre><code>
+<strong>PUSHER_APP_ID=""</strong>
+<strong>PUSHER_APP_KEY=""</strong>
+<strong>PUSHER_APP_SECRET=""</strong>
+<strong>PUSHER_APP_CLUSTER=""</strong>
+</code></pre>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<pre><code>
+<strong>MAIL_MAILER=""</strong>
+<strong>MAIL_HOST=""</strong>
+<strong>MAIL_PORT=""</strong>
+<strong>MAIL_USERNAME=""</strong>
+<strong>MAIL_PASSWORD=""</strong>
+<strong>MAIL_FROM_ADDRESS=""</strong>
+</code></pre>
 
-## Laravel Sponsors
+<pre><code>
+<strong>DB_TEST_CONNECTION=""</strong>
+<strong>DB_TEST_HOST=""</strong>
+<strong>DB_TEST_PORT=""</strong>
+<strong>DB_TEST_DATABASE=""</strong>
+<strong>DB_TEST_USERNAME=""</strong>
+<strong>DB_TEST_PASSWORD=""</strong>
+</code></pre>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+<br>
 
-### Premium Partners
+<h2>Deploy to Docker <g-emoji class="g-emoji" alias="whale" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f433.png">🐳</g-emoji></h2>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+<h4>Containers:</h4>
+<ul>
+<li><span>nginx:alpine</span> - <code>:8000->80/tcp</code></li>
+<li><span>mariadb:latest</span> - <code>:3306</code></li>
+<li><span>php:8.2.13-fpm</span> - <code>:9000</code></li>
+</ul>
 
-## Contributing
+<h4>Containers structure:</h4>
+<div class="highlight highlight-source-shell"><pre>├── laravel-api-crud-template-app
+├── laravel-api-crud-template-web
+└── laravel-api-crud-template-db</pre></div>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+<h4>Setup:</h4>
+<pre>
+<code>$ git clone https://github.com/JAVI-CC/Laravel-API-CRUD-Template.git
+$ cd Laravel-API-CRUD-Template
+$ cp .env.example .env
+$ docker-compose up -d
+$ docker-compose exec --user=root app chmod -R 777 /var/www/
+$ docker-compose exec app composer install
+$ docker-compose exec app php artisan key:generate
+$ docker-compose exec app php artisan migrate --seed
+$ docker-compose exec app php artisan test</code>
+</pre>
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<span>Once you have the containers deployed, you can access the API at </span> <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>

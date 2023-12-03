@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Mail\VerifiedMail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -21,6 +24,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+            $parseUrl = parse_url($url);
+            $urlPath = str_replace('/email/verify', '', $parseUrl['path']);
+            $urlPath = $urlPath . '?' . $parseUrl['query'];
+            //En el frontend esta url sera redirigido al vue router que obtendra el user_id + hash
+            //para que haga una petición axios pasandole su user_id + hash.
+            $url = config('app.DOMAIN_FRONTEND') . "/user/verification/email" . $urlPath . "&token=" . urlencode($notifiable->generateToken());
+            return (new VerifiedMail($url))->to($notifiable->email);
+        });
     }
 }
