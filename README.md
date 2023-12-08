@@ -189,6 +189,28 @@
 </tbody>
 </table>
 
+<h3>Endpoints Roles:</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Auth</th>
+<th>Is Admin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/api/roles</td>
+<td>Get all the roles</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+
 <br>
 
 <h2>Configure values in the .env file</h2>
