@@ -120,14 +120,14 @@ class AuthTest extends TestCase
     public function test_email_verificar_usuario(): void
     {
         $data = ['email' => 'user@email.com'];
-        $url = config('app.DOMAIN_FRONTEND') . "/user/verification/email" . Str::random(10) . "&token=" . Str::random(10);
+        $url = config('app.DOMAIN_FRONTEND') . "/auth/verification/email" . Str::random(10) . "&token=" . Str::random(10);
         $user = $this->createNewUser(false, false);
 
         $mailable = (new VerifiedMail($url))->to($user->email);
 
         $mailable->assertTo($data['email']);
         $mailable->assertHasSubject(config('app.name') . ' - ' . __('Verify email'));
-        $mailable->assertSeeInHtml(config('app.DOMAIN_FRONTEND') . '/user/verification/email');
+        $mailable->assertSeeInHtml(config('app.DOMAIN_FRONTEND') . '/auth/verification/email');
         $mailable->assertSeeInHtml('&token=');
     }
 

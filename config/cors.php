@@ -15,11 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'broadcasting/auth'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [(config('app.env') == 'production') ? config('app.ORIGIN_DOMAIN') : '*'],
+    'allowed_origins' => [(config('app.env') == 'production') ? config('app.DOMAIN_ORIGIN') : '*'],
 
     'allowed_origins_patterns' => [],
 

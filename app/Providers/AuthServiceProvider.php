@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
             $urlPath = $urlPath . '?' . $parseUrl['query'];
             //En el frontend esta url sera redirigido al vue router que obtendra el user_id + hash
             //para que haga una petición axios pasandole su user_id + hash.
-            $url = config('app.DOMAIN_FRONTEND') . "/user/verification/email" . $urlPath . "&token=" . urlencode($notifiable->generateToken());
+            $url = config('app.DOMAIN_FRONTEND') . "/auth/verification/email" . $urlPath . "&token=" . urlencode($notifiable->generateToken());
             return (new VerifiedMail($url))->to($notifiable->email);
         });
     }

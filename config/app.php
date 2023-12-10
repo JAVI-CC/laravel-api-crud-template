@@ -155,6 +155,7 @@ return [
     |
     */
 
+    'DOMAIN_ORIGIN' => env('DOMAIN_ORIGIN'),
     'DOMAIN_FRONTEND' => env('DOMAIN_FRONTEND'),
     'MAIL_FROM_ADDRESS' => env('MAIL_FROM_ADDRESS'),
 

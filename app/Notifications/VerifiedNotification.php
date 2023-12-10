@@ -55,7 +55,7 @@ class VerifiedNotification extends Notification
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
-            'type' => 'verified',
+            'tipo' => 'verified',
             'value' => $this->isVerified,
         ]);
     }

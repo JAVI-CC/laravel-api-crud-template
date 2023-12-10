@@ -10,7 +10,7 @@ Route::controller(AuthController::class)
     ->prefix('auth')
     ->group(function () {
         Route::middleware(['localization'])->post('login', 'login')->name('login');
-        Route::middleware(['auth:sanctum', 'verified', 'localization'])->get('check', 'check')->name('check');
+        Route::middleware(['auth:sanctum', 'localization'])->get('check', 'check')->name('check');
         Route::middleware(['auth:sanctum', 'verified', 'localization'])->get('logout', 'logout')->name('logout');
         Route::middleware(['auth:sanctum', 'verified', 'localization'])->post('change/password', 'changePassword')->name('changePassowrd');
         Route::middleware(['localization'])->post('recovery/password', 'recoveryPassword')->name('recoveryPassowrd');
