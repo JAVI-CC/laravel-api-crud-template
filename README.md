@@ -239,6 +239,10 @@
 <strong>DB_TEST_PASSWORD=""</strong>
 </code></pre>
 
+<pre><code>
+<strong>DOMAIN_FRONTEND="http://localhost:9000"</strong>
+</code></pre>
+
 <br>
 
 <h2>Deploy to Docker <g-emoji class="g-emoji" alias="whale" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f433.png">🐳</g-emoji></h2>
