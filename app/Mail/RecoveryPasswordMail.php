@@ -41,7 +41,7 @@ class RecoveryPasswordMail extends Mailable
             view: 'emails.recoveryPassword',
             with: [
                 'nombre' => $this->user->nombre,
-                'url' => config('app.DOMAIN_FRONTEND') . "/user/change/password/" . urlencode($this->user->generateToken()),
+                'url' => config('app.DOMAIN_FRONTEND') . "/auth/reset/password/" . urlencode($this->user->generateToken()),
             ],
         );
     }

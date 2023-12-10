@@ -94,7 +94,7 @@ class AuthTest extends TestCase
 
         $mailable->assertTo($data['email']);
         $mailable->assertHasSubject(config('app.name') . ' - ' . __('Restore password'));
-        $mailable->assertSeeInOrderInHtml([$user->nombre, config('app.DOMAIN_FRONTEND') . '/user/change/password/Bearer']);
+        $mailable->assertSeeInOrderInHtml([$user->nombre, config('app.DOMAIN_FRONTEND') . '/auth/reset/password/Bearer']);
     }
 
     public function test_llamar_al_endpoint_verificacion_usuario_ya_verificado(): void

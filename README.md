@@ -59,6 +59,10 @@
 <code>$ composer install && php artisan key:generate && php artisan migrate --seed && php artisan test</code>
 </pre>
 
+<h3>User admin credentials</h3>
+<span>User: <b>admin@email.com</b></span><br>
+<span>Password: <b>password</b></span>
+
 <hr>
 
 <h3>Endpoints Auth:</h3>
