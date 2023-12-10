@@ -19,7 +19,7 @@ class RecoveryPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', Rule::exists('users', 'email')]
+            'email' => ['required', 'string', 'email', Rule::exists('users', 'email')]
         ];
     }
 
