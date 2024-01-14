@@ -1,49 +1,45 @@
-version: "3.7"
+version: '3'
+
 services:
   app:
     build:
-      args:
-        user: sammy
-        uid: 1000
-      context: ./
+      context: .
       dockerfile: Dockerfile
-    image: laravel-api-crud-template
-    container_name: laravel-api-crud-template-server-app
+    image: javi98/laravel-api-crud-template:1.0.0
     restart: unless-stopped
-    working_dir: /var/www/
+    networks:
+      - laravel-api-crud-template
     volumes:
       - ./:/var/www
-    networks:
-      - laravel-api-crud-template-server
-
-  db:
-    image: mariadb:latest
-    container_name: laravel-api-crud-template-server-db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    networks:
-      - laravel-api-crud-template-server
 
   nginx:
     image: nginx:alpine
-    container_name: laravel-api-crud-template-server-nginx
     restart: unless-stopped
     ports:
       - "8000:80"
+    networks:
+      - laravel-api-crud-template
     volumes:
       - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d
+      - ./docker-compose/nginx/conf.d/:/etc/nginx/conf.d/
+
+  db:
+    image: mariadb:11.2.2
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
     networks:
-      - laravel-api-crud-template-server
+      - laravel-api-crud-template
+    volumes:
+      - ./docker-compose/mariadb/init:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
 
 networks:
-  laravel-api-crud-template-server:
+  laravel-api-crud-template:
     driver: bridge
+
+volumes:
+  db-data:
