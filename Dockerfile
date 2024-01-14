@@ -35,7 +35,7 @@ RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimiz
 
 # Copiamos todos los archivos de la carpeta actual de nuestra 
 # computadora (los archivos de laravel) a /var/www/
-WORKDIR /var/www
+COPY . .
 
 # Exponemos el puerto 9000 a la network
 EXPOSE 9000
