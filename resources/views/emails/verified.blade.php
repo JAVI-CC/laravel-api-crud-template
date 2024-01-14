@@ -231,7 +231,7 @@
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Cabin',sans-serif;" align="left">
 
                                                             <div style="font-size: 14px; color: #e5eaf5; line-height: 140%; text-align: center; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 140%;"><strong>T H A N K S&nbsp; &nbsp;F O R&nbsp; &nbsp;S I G N I N G&nbsp; &nbsp;U P !</strong></p>
+                                                                <p style="font-size: 14px; line-height: 140%;"><strong>{{ __('T H A N K S') }}&nbsp; &nbsp;{{ __('F O R') }}&nbsp; &nbsp;{{ __('S I G N I N G') }}&nbsp; &nbsp;{{ __('U P !') }}</strong></p>
                                                             </div>
 
                                                         </td>

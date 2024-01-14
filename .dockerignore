@@ -1,0 +1,8 @@
+.git/
+vendor/
+node_modules/
+composer.lock
+.git
+.gitignore
+.gitattributes
+README.md

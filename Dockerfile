@@ -1,7 +1,7 @@
-# Partimos de la imagen php en su versión 7.4
+# Partimos de la imagen php en su versión 8.2.13
 FROM php:8.2.13-fpm
 
-# Copiamos los archivos package.json composer.json y composer-lock.json a /var/www/
+# Copiamos los archivos package.json composer.json a /var/www/
 COPY composer*.json /var/www/
 
 # Nos movemos a /var/www/
@@ -28,15 +28,22 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
 # Instalamos composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
 
 # Instalamos dependendencias de composer
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader --no-scripts
 
 # Copiamos todos los archivos de la carpeta actual de nuestra 
 # computadora (los archivos de laravel) a /var/www/
-COPY . /var/www/
-RUN chmod -R 755 /var/www/storage
+WORKDIR /var/www
+
+COPY . ./
+
+# Actualizar y asignar permisos para que funcione correctamente la aplicación de laravel
+RUN composer dump-autoload -o \
+    && chown -R :www-data ./ \
+    && chmod -R 775 ./storage ./bootstrap/cache \
+    && chmod +x ./docker-compose-config/run.sh
 
 # Exponemos el puerto 9000 a la network
 EXPOSE 9000

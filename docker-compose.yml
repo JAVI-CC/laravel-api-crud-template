@@ -5,15 +5,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: javi98/laravel-api-crud-template:1.0.0
+    image: javi98/laravel-api-crud-template:1.0.1
+    container_name: laravel-api-crud-template-app
     restart: unless-stopped
     networks:
       - laravel-api-crud-template
     volumes:
       - ./:/var/www
+    depends_on:
+      - db
+      - smtp
 
   nginx:
     image: nginx:alpine
+    container_name: laravel-api-crud-template-nginx
     restart: unless-stopped
     ports:
       - "8000:80"
@@ -21,10 +26,11 @@ services:
       - laravel-api-crud-template
     volumes:
       - ./:/var/www
-      - ./docker-compose/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./docker-compose-config/nginx/conf.d/:/etc/nginx/conf.d/
 
   db:
     image: mariadb:11.2.2
+    container_name: laravel-api-crud-template-db
     restart: unless-stopped
     environment:
       MARIADB_DATABASE: ${DB_DATABASE}
@@ -34,8 +40,23 @@ services:
     networks:
       - laravel-api-crud-template
     volumes:
-      - ./docker-compose/mariadb/init:/docker-entrypoint-initdb.d
+      - ./docker-compose-config/mariadb/init:/docker-entrypoint-initdb.d
       - db-data:/var/lib/mysql
+
+  smtp:
+    image: jcalonso/mailhog:v1.0.1
+    container_name: laravel-api-crud-template-smtp
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # smtp server
+      - "8025:8025" # web ui
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /home/mailhog
+    volumes:
+      - smtp-data:/home/mailhog
+    networks:
+      - laravel-api-crud-template
 
 networks:
   laravel-api-crud-template:
