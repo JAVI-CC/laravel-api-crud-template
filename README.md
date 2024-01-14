@@ -271,6 +271,7 @@
 $ cd Laravel-API-CRUD-Template
 $ cp .env.example .env
 $ docker-compose up -d
+$ docker-compose exec app chmod +x ./docker-compose-config/run.sh
 $ docker-compose exec app ./docker-compose-config/run.sh</code>
 </pre>
 

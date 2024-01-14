@@ -37,14 +37,6 @@ RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimiz
 # computadora (los archivos de laravel) a /var/www/
 WORKDIR /var/www
 
-COPY . ./
-
-# Actualizar y asignar permisos para que funcione correctamente la aplicación de laravel
-RUN composer dump-autoload -o \
-    && chown -R :www-data ./ \
-    && chmod -R 775 ./storage ./bootstrap/cache \
-    && chmod +x ./docker-compose-config/run.sh
-
 # Exponemos el puerto 9000 a la network
 EXPOSE 9000
 
