@@ -64,3 +64,4 @@ networks:
 
 volumes:
   db-data:
+  smtp-data:
