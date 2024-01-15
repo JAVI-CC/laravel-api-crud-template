@@ -12,6 +12,7 @@ services:
       - laravel-api-crud-template
     volumes:
       - ./:/var/www
+      - /var/www/vendor
     depends_on:
       - db
       - smtp
