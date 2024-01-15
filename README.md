@@ -251,6 +251,8 @@
 
 <h2>Deploy to Docker <g-emoji class="g-emoji" alias="whale" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f433.png">🐳</g-emoji></h2>
 
+<span>Docker repository: <a href="https://hub.docker.com/r/javi98/laravel-api-crud-template" target="_blank">https://hub.docker.com/r/javi98/laravel-api-crud-template</a></span>
+
 <h4>Containers:</h4>
 <ul>
 <li><span>php:8.2.13-fpm</span> - <code>:9000</code></li>
