@@ -9,25 +9,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LogError extends Model
 {
-    use HasFactory, HasUuids;
+  use HasFactory, HasUuids;
 
-    protected $table = "log_errors";
+  protected $table = "log_errors";
 
-    protected $fillable = [
-        'message',
-        'uri',
-        'request_params',
-        'user_id'
-    ];
+  protected $fillable = [
+    'message',
+    'uri',
+    'request_params',
+    'user_id'
+  ];
 
-    protected $casts = [
-        'request_params' => 'array',
-    ];
+  protected $casts = [
+    'request_params' => 'array',
+  ];
 
-    //Relacion uno a muchos (inversa)
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-    //Fin Relacion uno a muchos (inversa)
+  //Relacion uno a muchos (inversa)
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
+  //Fin Relacion uno a muchos (inversa)
 }

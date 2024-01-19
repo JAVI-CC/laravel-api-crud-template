@@ -9,13 +9,13 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class UsersExport implements FromView, ShouldAutoSize
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function view(): View
-    {
-        return view('exportexcel.users', [
-            'users' => User::getAllUsers()
-        ]);
-    }
+  /**
+   * @return \Illuminate\Support\Collection
+   */
+  public function view(): View
+  {
+    return view('exportexcel.users', [
+      'users' => User::getAllUsers()
+    ]);
+  }
 }

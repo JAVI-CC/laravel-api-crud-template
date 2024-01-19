@@ -19,13 +19,13 @@ class RolTest extends TestCase
 
   public function test_obtener_todos_los_roles(): void
   {
-      $userAuth = $this->createNewUser(true);
-      $roles = Rol::OrderBy('nombre')->get();
-      Sanctum::actingAs($userAuth);
+    $userAuth = $this->createNewUser(true);
+    $roles = Rol::OrderBy('nombre')->get();
+    Sanctum::actingAs($userAuth);
 
-      $res = $this->getJson(self::PATH);
+    $res = $this->getJson(self::PATH);
 
-      $res->assertStatus(200);
-      $res->assertExactJson($this->getResourceCollectionRoles($roles));
+    $res->assertStatus(200);
+    $res->assertExactJson($this->getResourceCollectionRoles($roles));
   }
 }

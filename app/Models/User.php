@@ -18,95 +18,96 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, HasUuids, Notifiable, SoftDeletes;
+  use HasApiTokens, HasFactory, HasUuids, Notifiable, SoftDeletes;
 
-    const CACHE_KEY = 'users';
+  const CACHE_KEY = 'users';
+  const PATH_AVATAR = '/users/avatar/';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'nombre',
-        'apellidos',
-        'email',
-        'password',
-        'email_verified_at',
-        'rol_id',
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array<int, string>
+   */
+  protected $fillable = [
+    'nombre',
+    'apellidos',
+    'email',
+    'password',
+    'email_verified_at',
+    'rol_id',
+  ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+  /**
+   * The attributes that should be hidden for serialization.
+   *
+   * @var array<int, string>
+   */
+  protected $hidden = [
+    'password',
+    'remember_token',
+  ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+  /**
+   * The attributes that should be cast.
+   *
+   * @var array<string, string>
+   */
+  protected $casts = [
+    'email_verified_at' => 'datetime',
+    'password' => 'hashed',
+  ];
 
-    //Relacion uno a muchos (inversa)
-    public function rol(): BelongsTo
-    {
-        return $this->belongsTo(Rol::class);
-    }
-    //Fin Relacion uno a muchos (inversa)
+  //Relacion uno a muchos (inversa)
+  public function rol(): BelongsTo
+  {
+    return $this->belongsTo(Rol::class);
+  }
+  //Fin Relacion uno a muchos (inversa)
 
-    //Attributes
-    protected function nombreCompleto(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->nombre . ' ' . $this->apellidos,
-        );
-    }
+  //Attributes
+  protected function nombreCompleto(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => $this->nombre . ' ' . $this->apellidos,
+    );
+  }
 
-    protected function isAdmin(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->rol->id === Rol::ADMIN_ID,
-        );
-    }
+  protected function isAdmin(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => $this->rol->id === Rol::ADMIN_ID,
+    );
+  }
 
-    protected function isEmailVerified(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->email_verified_at ? true : false,
-        );
-    }
-    //Fin Attributes
+  protected function isEmailVerified(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => $this->email_verified_at ? true : false,
+    );
+  }
+  //Fin Attributes
 
-    //Funciones
-    public static function findByEmail(string $email): User
-    {
-        return User::where('email', $email)->first();
-    }
+  //Funciones
+  public static function findByEmail(string $email): User
+  {
+    return User::where('email', $email)->first();
+  }
 
-    public static function countAdmins(): int
-    {
-        return self::where('rol_id', ROL::ADMIN_ID)->count();
-    }
+  public static function countAdmins(): int
+  {
+    return self::where('rol_id', ROL::ADMIN_ID)->count();
+  }
 
-    public static function getAllUsers(): Collection
-    {
-        return Cache::remember(User::CACHE_KEY, now()->addDay(), function () {
-            return User::With(['rol'])->orderBy('nombre')->get();
-        });
-    }
+  public static function getAllUsers(): Collection
+  {
+    return Cache::remember(User::CACHE_KEY, now()->addDay(), function () {
+      return User::With(['rol'])->orderBy('nombre')->get();
+    });
+  }
 
-    public function generateToken()
-    {
-        return 'Bearer ' . $this->createToken(config('app.name'))->plainTextToken;
-    }
-    //Fin Funciones
+  public function generateToken()
+  {
+    return 'Bearer ' . $this->createToken(config('app.name'))->plainTextToken;
+  }
+  //Fin Funciones
 }

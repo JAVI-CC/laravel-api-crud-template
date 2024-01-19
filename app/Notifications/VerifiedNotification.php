@@ -10,53 +10,53 @@ use Illuminate\Notifications\Notification;
 
 class VerifiedNotification extends Notification
 {
-    use Queueable;
+  use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct(private bool $isVerified)
-    {
-    }
+  /**
+   * Create a new notification instance.
+   */
+  public function __construct(private bool $isVerified)
+  {
+  }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
-    {
-        return ['broadcast'];
-    }
+  /**
+   * Get the notification's delivery channels.
+   *
+   * @return array<int, string>
+   */
+  public function via(object $notifiable): array
+  {
+    return ['broadcast'];
+  }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): void //MailMessage
-    {
-        //
-    }
+  /**
+   * Get the mail representation of the notification.
+   */
+  public function toMail(object $notifiable): void //MailMessage
+  {
+    //
+  }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
-    }
+  /**
+   * Get the array representation of the notification.
+   *
+   * @return array<string, mixed>
+   */
+  public function toArray(object $notifiable): array
+  {
+    return [
+      //
+    ];
+  }
 
-    /**
-     * Get the broadcastable representation of the notification.
-     */
-    public function toBroadcast(object $notifiable): BroadcastMessage
-    {
-        return new BroadcastMessage([
-            'tipo' => 'verified',
-            'value' => $this->isVerified,
-        ]);
-    }
+  /**
+   * Get the broadcastable representation of the notification.
+   */
+  public function toBroadcast(object $notifiable): BroadcastMessage
+  {
+    return new BroadcastMessage([
+      'tipo' => 'verified',
+      'value' => $this->isVerified,
+    ]);
+  }
 }

@@ -12,33 +12,33 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    protected static ?string $password;
+  protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
-        return [
-            'nombre' => fake()->firstName(),
-            'apellidos' => fake()->lastName(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-            'rol_id' => Rol::USER_ID,
-        ];
-    }
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  public function definition(): array
+  {
+    return [
+      'nombre' => fake()->firstName(),
+      'apellidos' => fake()->lastName(),
+      'email' => fake()->unique()->safeEmail(),
+      'email_verified_at' => now(),
+      'password' => static::$password ??= Hash::make('password'),
+      'remember_token' => Str::random(10),
+      'rol_id' => Rol::USER_ID,
+    ];
+  }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
-    }
+  /**
+   * Indicate that the model's email address should be unverified.
+   */
+  public function unverified(): static
+  {
+    return $this->state(fn (array $attributes) => [
+      'email_verified_at' => null,
+    ]);
+  }
 }

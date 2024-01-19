@@ -8,8 +8,8 @@ use Illuminate\Http\JsonResponse;
 
 trait HasFailedValidationRequest
 {
-    protected function failedValidation(Validator $validator): JsonResponse
-    {
-        throw new HttpResponseException(response()->json(["message" => $validator->errors()], 422));
-    }
+  protected function failedValidation(Validator $validator): JsonResponse
+  {
+    throw new HttpResponseException(response()->json(["message" => $validator->errors()], 422));
+  }
 }

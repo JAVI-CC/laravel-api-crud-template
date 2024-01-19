@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]); //Habilitar verificar emails
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });

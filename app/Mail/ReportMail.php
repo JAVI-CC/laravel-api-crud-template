@@ -12,51 +12,51 @@ use Illuminate\Queue\SerializesModels;
 
 class ReportMail extends Mailable
 {
-    use Queueable, SerializesModels;
+  use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(private LogError $reporte)
-    {
-        //
-    }
+  /**
+   * Create a new message instance.
+   */
+  public function __construct(private LogError $reporte)
+  {
+    //
+  }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: config('app.name') . " " . __('new report'),
-        );
-    }
+  /**
+   * Get the message envelope.
+   */
+  public function envelope(): Envelope
+  {
+    return new Envelope(
+      subject: config('app.name') . " " . __('new report'),
+    );
+  }
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.report',
-            with: [
-                'id' => $this->reporte->id,
-                'mensaje' => $this->reporte->message,
-                'uri' => $this->reporte->uri,
-                'user' => $this->reporte->user,
-                'parameters' =>  json_encode($this->reporte->request_params),
-                'fecha' => $this->reporte->created_at->format('d/m/Y H:i'),
-            ],
-        );
-    }
+  /**
+   * Get the message content definition.
+   */
+  public function content(): Content
+  {
+    return new Content(
+      view: 'emails.report',
+      with: [
+        'id' => $this->reporte->id,
+        'mensaje' => $this->reporte->message,
+        'uri' => $this->reporte->uri,
+        'user' => $this->reporte->user,
+        'parameters' =>  json_encode($this->reporte->request_params),
+        'fecha' => $this->reporte->created_at->format('d/m/Y H:i'),
+      ],
+    );
+  }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
+  /**
+   * Get the attachments for the message.
+   *
+   * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+   */
+  public function attachments(): array
+  {
+    return [];
+  }
 }
