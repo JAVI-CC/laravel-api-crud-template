@@ -23,6 +23,7 @@ class UserAddRequest extends FormRequest
       'nombre' => ['required', 'string', 'min:3', 'max:255'],
       'apellidos' => ['required', 'string', 'min:3', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
+      'avatar_imagen_base64' => ['nullable', 'base64mimes:jpg,jpeg,png', 'base64max:4096'],
       'password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
       'rol_id' => ['required', 'string', Rule::exists('roles', 'id')],
     ];

@@ -18,13 +18,12 @@ trait GetResourceUser
         'rol' =>  ['id' => $user->rol->id, 'nombre' => __($user->rol->nombre)],
         'is_admin' => $user->is_admin,
         'is_email_verified' => $user->is_email_verified,
-        'is_logged' => null,
-        'token' => null,
+        'avatar_url' => $user->avatar_url,
       ];
     })->toArray();
   }
 
-  private function getNewResourceUser(User $user, bool|null $isLogged = null, string $email = null): array
+  private function getNewResourceUser(User $user, string $email = null): array
   {
     return [
       'id' => $user->id,
@@ -34,8 +33,6 @@ trait GetResourceUser
       'email' => $email ? $email : $user->email,
       'rol' =>  ['id' => $user->rol->id, 'nombre' => __($user->rol->nombre)],
       'is_admin' => $user->is_admin,
-      'is_email_verified' => $user->is_email_verified,
-      'is_logged' => $isLogged,
     ];
   }
 

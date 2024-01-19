@@ -26,6 +26,7 @@ class UserFactory extends Factory
       'apellidos' => fake()->lastName(),
       'email' => fake()->unique()->safeEmail(),
       'email_verified_at' => now(),
+      'avatar_name_file' => fake()->boolean(50) ? fake()->uuid() . '.png' : null,
       'password' => static::$password ??= Hash::make('password'),
       'remember_token' => Str::random(10),
       'rol_id' => Rol::USER_ID,

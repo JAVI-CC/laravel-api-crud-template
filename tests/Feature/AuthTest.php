@@ -10,11 +10,11 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 use Tests\Traits\CreateNewUser;
-use Tests\Traits\GetResourceUser;
+use Tests\Traits\GetResourceAuth;
 
 class AuthTest extends TestCase
 {
-  use DatabaseMigrations, CreateNewUser, GetResourceUser;
+  use DatabaseMigrations, CreateNewUser, GetResourceAuth;
 
   private const PATH = '/api/auth/';
   private const PATH_USER = '/api/user/';
@@ -30,8 +30,8 @@ class AuthTest extends TestCase
 
     //Afirmar
     $res->assertStatus(200);
-    $res->assertJsonCount(10);
-    $res->assertJson($this->getNewResourceUser($user, true, $data['email']));
+    $res->assertJsonCount(11);
+    $res->assertJson($this->getNewResourceAuth($user, true, $data['email']));
 
     $this->assertDatabaseCount('personal_access_tokens', 1);
     $this->assertStringContainsString('Bearer', $res->json()['token']);
@@ -45,8 +45,8 @@ class AuthTest extends TestCase
     $res = $this->getJson(self::PATH . 'check');
 
     $res->assertStatus(200);
-    $res->assertJsonCount(10);
-    $res->assertJson($this->getNewResourceUser($user, true));
+    $res->assertJsonCount(11);
+    $res->assertJson($this->getNewResourceAuth($user, true));
     $this->assertNull($res->json()['token']);
   }
 

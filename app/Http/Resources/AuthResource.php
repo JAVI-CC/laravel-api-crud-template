@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class AuthResource extends JsonResource
 {
   /**
    * Transform the resource into an array.
@@ -24,6 +24,8 @@ class UserResource extends JsonResource
       "is_email_verified" => $this->is_email_verified,
       "rol" => new SingleTraductionResource($this->rol),
       "avatar_url" => $this->avatar_url,
+      "is_logged" => $this->is_logged,
+      "token" => $this->access_token,
     ];
   }
 }

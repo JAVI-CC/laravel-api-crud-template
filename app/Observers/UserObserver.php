@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Services\MediaService;
 use App\Services\StrService;
 use Illuminate\Support\Facades\Cache;
 
@@ -32,6 +33,11 @@ class UserObserver
     $user->update([
       'email' => StrService::preventNamesDuplicates($user->email),
     ]);
+
+    if ($user->avatar_name_file) {
+      $mediaService = new MediaService(User::DISK_AVATARS, $user->avatar_name_file_attr);
+      $mediaService->deleteFile();
+    }
 
     Cache::forget(User::CACHE_KEY);
   }

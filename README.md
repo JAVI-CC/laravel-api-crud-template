@@ -16,7 +16,8 @@
   <li>Middleware.</li>
   <li>Policies.</li>
   <li>Observers.</li>
-  <li>Cached data</li>
+  <li>Cached data.</li>
+  <li>File Storage.</li>
   <li>Notifications with broadcast.</li>
   <li>Exports in Excel and PDF format.</li>
   <li>Blade Email Templates.</li>
@@ -56,7 +57,7 @@
 
 <h3>Setup</h3>
 <pre>
-<code>$ composer install && php artisan key:generate && php artisan migrate --seed && php artisan test</code>
+<code>$ composer install && php artisan key:generate && php artisan storage:link && php artisan migrate --seed && php artisan test</code>
 </pre>
 
 <h3>User admin credentials</h3>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RecoveryPasswordRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AuthResource;
 use App\Models\User;
 use App\Notifications\RecoveryPasswordNotification;
 use Illuminate\Http\JsonResponse;
@@ -21,13 +21,13 @@ class AuthController extends Controller
 
     auth()->user()->is_logged = true;
     auth()->user()->access_token = auth()->user()->generateToken();
-    return response()->json(new UserResource(auth()->user()), 200);
+    return response()->json(new AuthResource(auth()->user()), 200);
   }
 
   public function check(): JsonResponse
   {
     auth()->user()->is_logged = true;
-    return response()->json(new UserResource(auth()->user()), 200);
+    return response()->json(new AuthResource(auth()->user()), 200);
   }
 
   public function logout(): JsonResponse

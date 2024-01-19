@@ -8,9 +8,12 @@ use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Rol;
 use App\Models\User;
+use App\Services\MediaService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -29,10 +32,27 @@ class UserController extends Controller
 
   public function store(UserAddRequest $request): JsonResponse
   {
-    $user = User::create($request->validated()); //observer
+    DB::beginTransaction();
 
-    event(new Registered($user));
+    $user = User::create(Arr::except($request->validated(), ['avatar_imagen_base64'])); //observer
+    $mediaService = new MediaService(User::DISK_AVATARS, $user->avatar_name_file_attr);
 
+    if ($request->avatar_imagen_base64) {
+      $mediaService->uploadFileBase64($request->avatar_imagen_base64);
+      $user->update(['avatar_name_file' => $user->avatar_name_file_attr]);
+    }
+
+    try {
+      event(new Registered($user));
+    } catch (\Exception $e) {
+      if ($request->avatar_imagen_base64)
+        $mediaService->deleteFile();
+
+      DB::rollBack();
+      return response()->json(['message' => $e->getMessage()], 500);
+    }
+
+    DB::commit();
     return response()->json(new UserResource($user), 201);
   }
 
@@ -47,6 +67,17 @@ class UserController extends Controller
       $request->email ? 'email' : $user->email,
       $request->rol_id ? 'rol_id' : $user->rol_id,
     ])); //observer
+
+    if ($request->avatar_imagen_base64 || $request->avatar_is_delete_actually) {
+      $mediaService = new MediaService(User::DISK_AVATARS, $user->avatar_name_file_attr);
+      if ($request->avatar_is_delete_actually && !$request->avatar_imagen_base64) {
+        $mediaService->deleteFile();
+        $user->update(['avatar_name_file' => null]);
+      } else if ($request->avatar_imagen_base64) {
+        $mediaService->uploadFileBase64($request->avatar_imagen_base64);
+        $user->update(['avatar_name_file' => $user->avatar_name_file_attr]);
+      }
+    }
 
     return response()->json(new UserResource($user), 200);
   }

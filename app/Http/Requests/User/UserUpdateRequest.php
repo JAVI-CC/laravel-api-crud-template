@@ -22,7 +22,8 @@ class UserUpdateRequest extends FormRequest
       'nombre' => ['nullable', 'string', 'min:3', 'max:255'],
       'apellidos' => ['nullable', 'string', 'min:3', 'max:255'],
       'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id, 'id')],
-      'imagen_avatar_base64' => ['nullable', 'base64mimes:jpg,jpeg,png', 'base64max:4096'],
+      'avatar_imagen_base64' => ['nullable', 'base64mimes:jpg,jpeg,png', 'base64max:4096'],
+      'avatar_is_delete_actually' => ['nullable', 'boolean'],
       'rol_id' => ['nullable', 'string', Rule::exists('roles', 'id')],
     ];
   }

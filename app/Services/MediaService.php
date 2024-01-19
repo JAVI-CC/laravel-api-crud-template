@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaService
 {
+
+  public function __construct(private string $nameDisk, private string|null $nameFile = null)
+  {
+  }
+
   // public static function cloudFolder(): string
   // {
   //   return [
@@ -14,13 +19,31 @@ class MediaService
   //   ][config('app.FILESYSTEM_DISK')];
   // }
 
-  public static function uploadFileBase64(string $path, string $base64): string
+  public function uploadFileBase64(string $base64): string
   {
-      @list($ext, $fileData) = explode(';', $base64);
-      @list(, $fileData) = explode(',', $fileData);
+    @list($ext, $fileData) = explode(';', $base64);
+    @list(, $fileData) = explode(',', $fileData);
 
-      Storage::disk(config('app.FILESYSTEM_DISK'))->put($path, base64_decode($fileData));
+    Storage::disk($this->nameDisk)->put($this->nameFile, base64_decode($fileData));
 
-      return $path;
+    return $this->nameFile . $ext;
+  }
+
+  public function deleteFile(): bool
+  {
+    return Storage::disk($this->nameDisk)->delete($this->nameFile);
+  }
+
+  public function getUrlFile(): string
+  {
+    return Storage::disk($this->nameDisk)->url($this->nameFile);
+  }
+
+  public function cleanDirectory(): void
+  {
+    $allFiles = Storage::disk($this->nameDisk)->allFiles();
+
+    foreach ($allFiles as $file)
+      Storage::disk($this->nameDisk)->delete($file);
   }
 }
