@@ -228,6 +228,10 @@
 </code></pre>
 
 <pre><code>
+<strong>QUEUE_CONNECTION="database"</strong>
+</code></pre>
+
+<pre><code>
 <strong>MAIL_MAILER=""</strong>
 <strong>MAIL_HOST=""</strong>
 <strong>MAIL_PORT=""</strong>
