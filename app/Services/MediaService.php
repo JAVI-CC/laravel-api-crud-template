@@ -43,6 +43,9 @@ class MediaService
   {
     $allFiles = Storage::disk($this->nameDisk)->allFiles();
 
+    if (false !== $key = array_search('.gitignore', $allFiles))
+      unset($allFiles[$key]);
+
     foreach ($allFiles as $file)
       Storage::disk($this->nameDisk)->delete($file);
   }

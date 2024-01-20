@@ -11,6 +11,7 @@
   <li>Feature testing.</li>
   <li>Email sending Notification to recovery password.</li>
   <li>Email sending notification to verify the user.</li>
+  <li>Queues and Jobs.</li>
   <li>Factories.</li>
   <li>Traits.</li>
   <li>Middleware.</li>

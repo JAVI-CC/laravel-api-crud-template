@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Jobs\QueuedVerifyEmailJob;
 use App\Services\MediaService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -106,6 +107,14 @@ class User extends Authenticatable implements MustVerifyEmail
     );
   }
   //Fin Attributes
+
+  //Jobs
+  public function sendEmailVerificationNotification()
+  {
+    //dispactches the job to the queue passing it this User object
+    QueuedVerifyEmailJob::dispatch($this);
+  }
+  //Fin Jobs
 
   //Funciones
   public static function findByEmail(string $email): User
