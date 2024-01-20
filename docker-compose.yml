@@ -8,14 +8,13 @@ services:
     image: javi98/laravel-api-crud-template:1.0.2
     container_name: laravel-api-crud-template-app
     restart: unless-stopped
-    networks:
-      - laravel-api-crud-template
     volumes:
       - ./:/var/www
       - /var/www/vendor
     depends_on:
       - db
       - smtp
+      - soketi
 
   nginx:
     image: nginx:alpine
@@ -23,8 +22,6 @@ services:
     restart: unless-stopped
     ports:
       - "8000:80"
-    networks:
-      - laravel-api-crud-template
     volumes:
       - ./:/var/www
       - ./docker-compose-config/nginx/conf.d/:/etc/nginx/conf.d/
@@ -38,8 +35,6 @@ services:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
-    networks:
-      - laravel-api-crud-template
     volumes:
       - ./docker-compose-config/mariadb/init:/docker-entrypoint-initdb.d
       - db-data:/var/lib/mysql
@@ -56,8 +51,6 @@ services:
       MH_MAILDIR_PATH: /home/mailhog
     volumes:
       - smtp-data:/home/mailhog
-    networks:
-      - laravel-api-crud-template
 
   soketi:
     image: quay.io/soketi/soketi:1.6-16-debian
@@ -71,8 +64,6 @@ services:
       SOKETI_METRICS_SERVER_PORT: "9601"
     volumes:
       - './docker-compose-config/soketi/config.json:/opt/config.json'
-    networks:
-      - laravel-api-crud-template
     command: ["node", "/app/bin/server.js", "start", "--config=/opt/config.json"]
 
 networks:
