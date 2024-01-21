@@ -14,6 +14,27 @@
 					"item": [
 						{
 							"name": "Login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"protocolProfileBehavior": {
 								"disabledSystemHeaders": {
 									"accept": true
@@ -432,7 +453,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"nombre\": \"Javi\",\r\n    \"apellidos\": \"Javier\",\r\n    \"email\": \"javi@javi.com\",\r\n    \"password\": \"Javi-1234\",\r\n    \"password_confirmation\": \"Javi-1234\",\r\n    \"rol_id\": \"fcad485b-3a80-4237-a56a-0f7f29d7b148\"\r\n}",
+									"raw": "{\r\n    \"nombre\": \"Javi\",\r\n    \"apellidos\": \"Javier\",\r\n    \"email\": \"javi@javi.com\",\r\n    \"avatar_imagen_base64\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBwIAMCbHYQAAAABJRU5ErkJggg==\",\r\n    \"password\": \"Javi-1234\",\r\n    \"password_confirmation\": \"Javi-1234\",\r\n    \"rol_id\": \"fcad485b-3a80-4237-a56a-0f7f29d7b148\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -475,7 +496,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"nombre\": \"Javi 2.0\",\r\n    \"apellidos\": \"Javier 2.1\",\r\n    \"email\": \"javi2@javi.com\",\r\n    \"rol_id\": \"fcad485b-3a80-4237-a56a-0f7f29d7b148\"\r\n}",
+									"raw": "{\r\n    \"nombre\": \"Javi 2.0\",\r\n    \"apellidos\": \"Javier 2.1\",\r\n    \"email\": \"javi2@javi.com\",\r\n    \"avatar_imagen_base64\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBwIAMCbHYQAAAABJRU5ErkJggg==\",\r\n    \"avatar_is_delete_actually\": true,\r\n    \"rol_id\": \"fcad485b-3a80-4237-a56a-0f7f29d7b148\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -483,14 +504,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/user/9aaefd91-536b-4ce4-be34-81e51f4e406e",
+									"raw": "{{host}}/api/user/9b21c1b4-5eab-430d-831a-0a8fa64099b9",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"user",
-										"9aaefd91-536b-4ce4-be34-81e51f4e406e"
+										"9b21c1b4-5eab-430d-831a-0a8fa64099b9"
 									]
 								}
 							},
