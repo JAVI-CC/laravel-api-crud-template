@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RecoveryPasswordException;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RecoveryPasswordRequest;
@@ -50,7 +51,7 @@ class AuthController extends Controller
     try {
       $user->notify(new RecoveryPasswordNotification());
     } catch (\Exception $e) {
-      return response()->json(['message' => __('The password could not be reset at this time, please try again later')], 500);
+      throw new RecoveryPasswordException();
     }
 
     return response()->json(['message' => __('In a few moments you will receive an email to reset your password. Check your mailbox')], 200);

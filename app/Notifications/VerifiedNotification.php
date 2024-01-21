@@ -15,7 +15,7 @@ class VerifiedNotification extends Notification implements ShouldQueue
   /**
    * Create a new notification instance.
    */
-  public function __construct(private bool $isVerified)
+  public function __construct(public bool $isVerified)
   {
   }
 

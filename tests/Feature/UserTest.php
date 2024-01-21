@@ -4,11 +4,15 @@ namespace Tests\Feature;
 
 use App\Exports\UsersExport;
 use App\Models\User;
+use Closure;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Maatwebsite\Excel\Facades\Excel;
@@ -28,10 +32,11 @@ class UserTest extends TestCase
     $userAuth = $this->createNewUser(true);
     $this->createMutipleUser(5);
     $users = User::With(['rol'])->orderBy('nombre')->get();
+    Cache::shouldReceive('remember')->once()->with('users', (int)now()->addDay()->diffInSeconds(), Closure::class)->andReturn($users);
     Sanctum::actingAs($userAuth);
-
+    
     $res = $this->getJson(self::PATH);
-
+    
     $res->assertStatus(200);
     $res->assertExactJson($this->getResourceCollectionUsers($users));
   }
@@ -51,6 +56,7 @@ class UserTest extends TestCase
 
   public function test_crear_user(): void
   {
+    Event::fake();
     Storage::fake(self::FAKE_STORAGE);
     Sanctum::actingAs($this->createNewUser(true));
     $data = [
@@ -66,6 +72,7 @@ class UserTest extends TestCase
     $res = $this->postJson(self::PATH, $data);
     $user = User::Where('email', 'test@laravel.com')->first();
 
+    Event::assertDispatched(Registered::class);
     $this->assertEquals($data['nombre'], $user->nombre);
     $this->assertEquals($data['apellidos'], $user->apellidos);
     $this->assertEquals($data['email'], $user->email);

@@ -129,7 +129,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
   public static function getAllUsers(): Collection
   {
-    return Cache::remember(User::CACHE_KEY, now()->addDay(), function () {
+    return Cache::remember(User::CACHE_KEY, (int)now()->addDay()->diffInSeconds(), function () {
       return User::With(['rol'])->orderBy('nombre')->get();
     });
   }

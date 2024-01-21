@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RegisteredException;
 use App\Exports\UsersExport;
 use App\Http\Requests\User\UserAddRequest;
 use App\Http\Requests\User\UserUpdateRequest;
@@ -49,7 +50,7 @@ class UserController extends Controller
         $mediaService->deleteFile();
 
       DB::rollBack();
-      return response()->json(['message' => $e->getMessage()], 500);
+      throw new RegisteredException($e->getMessage());
     }
 
     DB::commit();

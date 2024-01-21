@@ -5,7 +5,13 @@ namespace Tests\Feature;
 use App\Mail\RecoveryPasswordMail;
 use App\Mail\VerifiedMail;
 use App\Models\User;
+use App\Notifications\RecoveryPasswordNotification;
+use App\Notifications\VerifiedNotification;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -76,17 +82,21 @@ class AuthTest extends TestCase
 
   public function test_llamar_al_endpoint_restablecer_password(): void
   {
+    Notification::fake();
     $data = ['email' => 'user@email.com'];
-    Sanctum::actingAs($this->createNewUser());
+    $user = $this->createNewUser();
+    Sanctum::actingAs($user);
 
     $res = $this->postJson(self::PATH . 'recovery/password', $data);
 
+    Notification::assertSentTo([$user], RecoveryPasswordNotification::class, fn ($notification, $channels, $notifiable) => (in_array('mail', $channels)));
     $res->assertStatus(200);
     $res->assertExactJson(['message' => __('In a few moments you will receive an email to reset your password. Check your mailbox')]);
   }
 
   public function test_email_restablecer_password(): void
   {
+    Mail::fake();
     $data = ['email' => 'user@email.com'];
     $user = $this->createNewUser();
 
@@ -99,26 +109,33 @@ class AuthTest extends TestCase
 
   public function test_llamar_al_endpoint_verificacion_usuario_ya_verificado(): void
   {
-    Sanctum::actingAs($this->createNewUser());
+    Notification::fake();
+    $user = $this->createNewUser();
+    Sanctum::actingAs($user);
 
     $res = $this->postJson(self::PATH_USER . 'verification/email/notification');
 
+    Notification::assertSentTo([$user], VerifiedNotification::class, fn ($notification, $channels, $notifiable) => (in_array('broadcast', $channels) && $notification->isVerified));
     $res->assertStatus(200);
     $res->assertExactJson(['message' => __('Email already verified')]);
   }
 
   public function test_llamar_al_endpoint_verificacion_usuario_no_verificado(): void
   {
-    Sanctum::actingAs($this->createNewUser(false, false));
+    Notification::fake();
+    $user = $this->createNewUser(false, false);
+    Sanctum::actingAs($user);
 
     $res = $this->postJson(self::PATH_USER . 'verification/email/notification');
 
+    Notification::assertNotSentTo([$user], VerifiedNotification::class);
     $res->assertStatus(200);
     $res->assertExactJson(['message' => __('Email forwarded successfully')]);
   }
 
   public function test_email_verificar_usuario(): void
   {
+    Mail::fake();
     $data = ['email' => 'user@email.com'];
     $url = config('app.DOMAIN_FRONTEND') . "/auth/verification/email" . Str::random(10) . "&token=" . Str::random(10);
     $user = $this->createNewUser(false, false);
@@ -133,12 +150,16 @@ class AuthTest extends TestCase
 
   public function test_verificar_usuario(): void
   {
+    Notification::fake();
+    Event::fake();
     $data = ['email' => 'user@email.com'];
     $user = $this->createNewUser(false, false);
     Sanctum::actingAs($user);
 
     $res = $this->getJson(self::PATH_USER . 'verification/email/' . $user->id . '/' . sha1($data['email']));
 
+    Notification::assertSentTo([$user], VerifiedNotification::class, fn ($notification, $channels, $notifiable) => (in_array('broadcast', $channels) && $notification->isVerified));
+    Event::assertDispatched(Verified::class);
     $this->assertNotNull($user->email_verified_at);
     $res->assertStatus(200);
     $res->assertExactJson(['message' => __('Email has been verified')]);
@@ -146,6 +167,8 @@ class AuthTest extends TestCase
 
   public function test_verificar_usuario_ya_verificado(): void
   {
+    Notification::fake();
+    Event::fake();
     $data = ['email' => 'user@email.com'];
     $user = $this->createNewUser(false);
     $emailVerifiedAt = $user->email_verified_at;
@@ -153,6 +176,8 @@ class AuthTest extends TestCase
 
     $res = $this->getJson(self::PATH_USER . 'verification/email/' . $user->id . '/' . sha1($data['email']));
 
+    Notification::assertSentTo([$user], VerifiedNotification::class, fn ($notification, $channels, $notifiable) => (in_array('broadcast', $channels) && $notification->isVerified));
+    Event::assertNotDispatched(Verified::class);
     $this->assertEquals($emailVerifiedAt, $user->email_verified_at);
     $res->assertStatus(200);
     $res->assertExactJson(['message' => __('Email already verified')]);
