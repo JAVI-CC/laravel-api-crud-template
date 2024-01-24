@@ -15,6 +15,7 @@ services:
       - db
       - smtp
       - soketi
+      - redis
 
   nginx:
     image: nginx:alpine
@@ -66,6 +67,17 @@ services:
       - './docker-compose-config/soketi/config.json:/opt/config.json'
     command: ["node", "/app/bin/server.js", "start", "--config=/opt/config.json"]
 
+  redis:
+    image: redis:7.2.4
+    container_name: laravel-api-crud-template-redis
+    restart: unless-stopped
+    volumes:
+      - ./docker-compose-config/redis/redis.conf:/etc/redis/redis.conf
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "/etc/redis/redis.conf"]
+
 networks:
   laravel-api-crud-template:
     driver: bridge
@@ -73,3 +85,4 @@ networks:
 volumes:
   db-data:
   smtp-data:
+  redis-data:
