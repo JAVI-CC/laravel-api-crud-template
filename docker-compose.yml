@@ -77,6 +77,17 @@ services:
     ports:
       - "6379:6379"
     command: ["redis-server", "/etc/redis/redis.conf"]
+  
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    container_name: laravel-api-crud-template-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - db
 
 networks:
   laravel-api-crud-template:
