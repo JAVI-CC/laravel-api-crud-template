@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: javi98/laravel-api-crud-template:1.0.5
+    image: javi98/laravel-api-crud-template:1.0.6
     container_name: laravel-api-crud-template-app
     restart: unless-stopped
     volumes:
