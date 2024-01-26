@@ -275,6 +275,7 @@
 <li><span>mailhog:v1.0.1</span> - <code>:1025 # smtp server</code> <code>:8025 # web ui</code>
 <li><span>soketi:1.6-16-debian</span> - <code>:6001 # soketi port</code> <code>:9601</code></li>
 <li><span>redis:7.2.4</span> - <code>:6379</code></li>
+<li><span>phpmyadmin:5.2.1</span> - <code>:8081->80/tcp</code></li>
 </ul>
 
 <h4>Containers structure:</h4>
@@ -283,7 +284,8 @@
 ├── laravel-api-crud-template-db
 ├── laravel-api-crud-template-smtp
 ├── laravel-api-crud-template-soketi
-└── laravel-api-crud-template-redis</pre></div>
+├── laravel-api-crud-template-redis
+└── laravel-api-crud-template-phpmyadmin</pre></div>
 
 <h4>Setup:</h4>
 <pre>
