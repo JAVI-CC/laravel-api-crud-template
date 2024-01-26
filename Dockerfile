@@ -4,6 +4,9 @@ FROM php:8.2.13-fpm
 # Copiamos los archivos package.json composer.json a /var/www/
 COPY composer*.json /var/www/
 
+# Copiamos el archivo de configuración supervisor
+COPY ./docker-compose-config/supervisor/supervisord.conf /etc/supervisord/supervisord.conf
+
 # Nos movemos a /var/www/
 WORKDIR /var/www/
 
@@ -22,10 +25,12 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
-# Instalamos extensiones de PHP
-RUN docker-php-ext-install pdo_mysql zip exif pcntl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
+# Instalamos extensiones de PHP y supervisor
+RUN docker-php-ext-install pdo_mysql zip exif pcntl bcmath \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends supervisor
 
 # Instalamos composer
 COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
@@ -43,4 +48,4 @@ RUN composer dump-autoload -o
 EXPOSE 9000
 
 # Corremos el comando php-fpm para ejecutar PHP
-CMD ["php-fpm"]
+CMD ["supervisord", "-c", "/etc/supervisord/supervisord.conf"]

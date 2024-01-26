@@ -229,7 +229,7 @@
 </code></pre>
 
 <pre><code>
-<strong>QUEUE_CONNECTION="database"</strong>
+<strong>QUEUE_CONNECTION=""</strong>
 </code></pre>
 
 <pre><code>
