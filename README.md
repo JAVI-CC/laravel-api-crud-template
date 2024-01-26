@@ -233,6 +233,10 @@
 </code></pre>
 
 <pre><code>
+<strong>CACHE_DRIVER=""</strong>
+</code></pre>
+
+<pre><code>
 <strong>MAIL_MAILER=""</strong>
 <strong>MAIL_HOST=""</strong>
 <strong>MAIL_PORT=""</strong>
