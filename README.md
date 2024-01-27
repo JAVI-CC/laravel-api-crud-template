@@ -221,6 +221,11 @@
 <br>
 
 <h2>Configure values in the .env file</h2>
+
+<pre><code>
+<strong>APP_URL="http://localhost:8000"</strong>
+</code></pre>
+
 <pre><code>
 <strong>PUSHER_APP_ID=""</strong>
 <strong>PUSHER_APP_KEY=""</strong>
