@@ -310,7 +310,6 @@ $ docker compose exec app ./docker-config/run.sh</code>
 
 <p>In case you are using your IDE to develop the application and it odes not detect the files it contains within the <strong>vendor folder</strong>, you have to copy the files from the vendor folder of the container to the host machine with the following command.</p>
 
-<pre><code>$ docker compose exec -u root app chown -R [USERNAME:javi]:[USERNAME:javi] vendor
-$ docker compose cp app:/var/www/vendor .</code></pre>
+<pre><code>$ docker compose cp app:/var/www/vendor .</code></pre>
 
 <span>Once you have the containers deployed, you can access the API at </span> <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>
