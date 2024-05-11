@@ -284,7 +284,7 @@
 <li><span>mailhog:v1.0.1</span> - <code>:1025 # smtp server</code> <code>:8025 # web ui</code>
 <li><span>soketi:1.6-16-debian</span> - <code>:6001 # soketi port</code> <code>:9601</code></li>
 <li><span>redis:7.2.4</span> - <code>:6379</code></li>
-<li><span>phpmyadmin:5.2.1</span> - <code>:8081->80/tcp</code></li>
+<li><span>phpmyadmin:5.2.1</span> - <code>:8085->80/tcp</code></li>
 </ul>
 
 <h4>Containers structure:</h4>
@@ -302,8 +302,15 @@
 $ cd Laravel-API-CRUD-Template
 $ cp .env.example .env
 $ docker compose up -d
-$ docker compose exec app chmod +x ./docker-compose-config/run.sh
-$ docker compose exec app ./docker-compose-config/run.sh</code>
+$ docker compose exec app chmod +x ./docker-config/run.sh
+$ docker compose exec app ./docker-config/run.sh</code>
 </pre>
+
+<br>
+
+<p>In case you are using your IDE to develop the application and it odes not detect the files it contains within the <strong>vendor folder</strong>, you have to copy the files from the vendor folder of the container to the host machine with the following command.</p>
+
+<pre><code>$ docker compose exec -u root app chown -R [USERNAME:javi]:[USERNAME:javi] vendor
+$ docker compose cp app:/var/www/vendor .</code></pre>
 
 <span>Once you have the containers deployed, you can access the API at </span> <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>

@@ -1,11 +1,15 @@
 # Partimos de la imagen php en su versión 8.2.13
 FROM php:8.2.13-fpm
 
+# Argumentos definidos en el docker-compose.yml
+ARG user
+ARG uid
+
 # Copiamos los archivos package.json composer.json a /var/www/
 COPY composer*.json /var/www/
 
 # Copiamos el archivo de configuración supervisor
-COPY ./docker-compose-config/supervisor/supervisord.conf /etc/supervisord/supervisord.conf
+COPY ./docker-config/supervisor/supervisord.conf /etc/supervisord/supervisord.conf
 
 # Nos movemos a /var/www/
 WORKDIR /var/www/
@@ -33,16 +37,24 @@ RUN docker-php-ext-install pdo_mysql zip exif pcntl bcmath \
     && apt-get install -y --no-install-recommends supervisor
 
 # Instalamos composer
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7.2 /usr/bin/composer /usr/bin/composer
 
 # Instalamos dependendencias de composer
 RUN composer install --no-ansi --no-interaction --no-progress --optimize-autoloader --no-scripts
 
-# Copiamos todos los archivos de la carpeta actual de nuestra 
-# computadora (los archivos de laravel) a /var/www/
+# Copiamos todos los archivos de la carpeta actual de 
+# los archivos de laravel a /var/www/
 COPY . .
 
+# Para generar los archivos necesarios que Composer usará para la carga automática
 RUN composer dump-autoload -o
+
+# Crear un usuario del sistema para ejecutar Composer y Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+USER $user
 
 # Exponemos el puerto 9000 a la network
 EXPOSE 9000
