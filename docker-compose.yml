@@ -23,7 +23,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: laravel-api-crud-template-nginx
+    container_name: laravel-api-crud-template-web
     restart: unless-stopped
     ports:
       - "8000:80"
