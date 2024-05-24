@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Rol;
+use App\Enums\RolTiposEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,7 +29,7 @@ class UserFactory extends Factory
       'avatar_name_file' => /*fake()->boolean(50) ? fake()->uuid() . '.png' :*/ null,
       'password' => static::$password ??= Hash::make('password'),
       'remember_token' => Str::random(10),
-      'rol_id' => Rol::USER_ID,
+      'rol_id' => RolTiposEnum::USER->value,
     ];
   }
 

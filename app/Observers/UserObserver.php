@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Enums\CacheKeysEnum;
+use App\Enums\DisksEnum;
 use App\Models\User;
 use App\Services\MediaService;
 use App\Services\StrService;
@@ -14,7 +16,7 @@ class UserObserver
    */
   public function created(User $user): void
   {
-    Cache::forget(User::CACHE_KEY);
+    Cache::forget(CacheKeysEnum::USER->value);
   }
 
   /**
@@ -22,7 +24,7 @@ class UserObserver
    */
   public function updated(User $user): void
   {
-    Cache::forget(User::CACHE_KEY);
+    Cache::forget(CacheKeysEnum::USER->value);
   }
 
   /**
@@ -35,11 +37,11 @@ class UserObserver
     ]);
 
     if ($user->avatar_name_file) {
-      $mediaService = new MediaService(User::DISK_AVATARS, $user->avatar_name_file_attr);
+      $mediaService = new MediaService(DisksEnum::AVATAR->value, $user->avatar_name_file_attr);
       $mediaService->deleteFile();
     }
 
-    Cache::forget(User::CACHE_KEY);
+    Cache::forget(CacheKeysEnum::USER->value);
   }
 
   /**

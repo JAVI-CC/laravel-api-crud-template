@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Rol;
+use App\Enums\RolTiposEnum;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
   {
     User::factory()->create([
       'email' => 'admin@email.com',
-      'rol_id' => Rol::ADMIN_ID
+      'rol_id' => RolTiposEnum::ADMIN->value
     ]);
 
     User::factory()->count(4)->create();

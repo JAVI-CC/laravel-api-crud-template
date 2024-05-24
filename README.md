@@ -14,6 +14,7 @@
   <li>Email sending notification to verify the user.</li>
   <li>Queues and Jobs.</li>
   <li>Factories.</li>
+  <li>Enums.</li>
   <li>Traits.</li>
   <li>Middleware.</li>
   <li>Policies.</li>

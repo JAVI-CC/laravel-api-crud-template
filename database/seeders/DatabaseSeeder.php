@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Enums\DisksEnum;
 use App\Models\User;
 use App\Services\MediaService;
 use Illuminate\Database\Seeder;
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
     //     'email' => 'test@example.com',
     // ]);
 
-    $mediaService = new MediaService(User::DISK_AVATARS);
+    $mediaService = new MediaService(DisksEnum::AVATAR->value);
     $mediaService->cleanDirectory();
 
     $this->call([

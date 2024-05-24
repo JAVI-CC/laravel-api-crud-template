@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\CacheKeysEnum;
+use App\Enums\DisksEnum;
+use App\Enums\RolTiposEnum;
 use App\Jobs\QueuedVerifyEmailJob;
 use App\Services\MediaService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,9 +24,6 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
   use HasApiTokens, HasFactory, HasUuids, Notifiable, SoftDeletes;
-
-  const CACHE_KEY = 'users';
-  const DISK_AVATARS = 'avatars';
 
   /**
    * The attributes that are mass assignable.
@@ -78,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
   protected function isAdmin(): Attribute
   {
     return Attribute::make(
-      get: fn () => $this->rol->id === Rol::ADMIN_ID,
+      get: fn () => $this->rol->id === RolTiposEnum::ADMIN->value,
     );
   }
 
@@ -98,7 +98,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
   protected function avatarUrl(): Attribute
   {
-    $avatarMedia = new MediaService(self::DISK_AVATARS, $this->avatar_name_file);
+    $avatarMedia = new MediaService(DisksEnum::AVATAR->value, $this->avatar_name_file);
 
     return Attribute::make(
       get: fn () => $this->avatar_name_file
@@ -124,12 +124,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
   public static function countAdmins(): int
   {
-    return self::where('rol_id', ROL::ADMIN_ID)->count();
+    return self::where('rol_id', RolTiposEnum::ADMIN->value)->count();
   }
 
   public static function getAllUsers(): Collection
   {
-    return Cache::remember(User::CACHE_KEY, (int)now()->addDay()->diffInSeconds(), function () {
+    return Cache::remember(CacheKeysEnum::USER->value, (int)now()->addDay()->diffInSeconds(), function () {
       return User::With(['rol'])->orderBy('nombre')->get();
     });
   }

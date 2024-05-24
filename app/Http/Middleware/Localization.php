@@ -2,14 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\LocalizationsEnum;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Localization
 {
-  protected const ALLOWED_LOCALIZATIONS = ['es', 'en'];
-
   /**
    * Handle an incoming request.
    *
@@ -18,7 +17,7 @@ class Localization
   public function handle(Request $request, Closure $next): Response
   {
     $localization = $request->header('Accept-Language');
-    $localization = in_array($localization, self::ALLOWED_LOCALIZATIONS, true) ? $localization : 'es';
+    $localization = in_array($localization, LocalizationsEnum::toArray(), true) ? $localization : LocalizationsEnum::ES->value;
     app()->setLocale($localization);
 
     return $next($request);

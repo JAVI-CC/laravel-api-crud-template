@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DisksEnum;
+use App\Enums\RolTiposEnum;
 use App\Exceptions\RegisteredException;
 use App\Exports\UsersExport;
 use App\Http\Requests\User\UserAddRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
-use App\Models\Rol;
 use App\Models\User;
 use App\Services\MediaService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -36,7 +37,7 @@ class UserController extends Controller
     DB::beginTransaction();
 
     $user = User::create(Arr::except($request->validated(), ['avatar_imagen_base64'])); //observer
-    $mediaService = new MediaService(User::DISK_AVATARS, $user->avatar_name_file_attr);
+    $mediaService = new MediaService(DisksEnum::AVATAR->value, $user->avatar_name_file_attr);
 
     if ($request->avatar_imagen_base64) {
       $mediaService->uploadFileBase64($request->avatar_imagen_base64);
@@ -59,7 +60,7 @@ class UserController extends Controller
 
   public function update(User $user, UserUpdateRequest $request): JsonResponse
   {
-    if ($request->rol_id === Rol::USER_ID && $user->is_admin)
+    if ($request->rol_id === RolTiposEnum::USER->value && $user->is_admin)
       $this->authorize('updateRolAdmin', [User::class, auth()->user()]);
 
     $user->update($request->only([
@@ -70,7 +71,7 @@ class UserController extends Controller
     ])); //observer
 
     if ($request->avatar_imagen_base64 || $request->avatar_is_delete_actually) {
-      $mediaService = new MediaService(User::DISK_AVATARS, $user->avatar_name_file_attr);
+      $mediaService = new MediaService(DisksEnum::AVATAR->value, $user->avatar_name_file_attr);
       if ($request->avatar_is_delete_actually && !$request->avatar_imagen_base64) {
         $mediaService->deleteFile();
         $user->update(['avatar_name_file' => null]);
