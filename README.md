@@ -55,6 +55,10 @@
 <td>Content-Type</td>
 <td>application/json</td>
 </tr>
+<tr>
+<td>Accept-Language</td>
+<td>['en', 'es']</td>
+</tr>
 </tbody>
 </table>
 
@@ -228,6 +232,24 @@
 </code></pre>
 
 <pre><code>
+<strong>DB_CONNECTION=""</strong>
+<strong>DB_HOST=""</strong>
+<strong>DB_PORT=""</strong>
+<strong>DB_DATABASE=""</strong>
+<strong>DB_USERNAME=""</strong>
+<strong>DB_PASSWORD=""</strong>
+</code></pre>
+
+<pre><code>
+<strong>DB_TEST_CONNECTION=""</strong>
+<strong>DB_TEST_HOST=""</strong>
+<strong>DB_TEST_PORT=""</strong>
+<strong>DB_TEST_DATABASE=""</strong>
+<strong>DB_TEST_USERNAME=""</strong>
+<strong>DB_TEST_PASSWORD=""</strong>
+</code></pre>
+
+<pre><code>
 <strong>PUSHER_APP_ID=""</strong>
 <strong>PUSHER_APP_KEY=""</strong>
 <strong>PUSHER_APP_SECRET=""</strong>
@@ -256,15 +278,6 @@
 <strong>REDIS_HOST=""</strong>
 <strong>REDIS_PASSWORD=""</strong>
 <strong>REDIS_PORT=""</strong>
-</code></pre>
-
-<pre><code>
-<strong>DB_TEST_CONNECTION=""</strong>
-<strong>DB_TEST_HOST=""</strong>
-<strong>DB_TEST_PORT=""</strong>
-<strong>DB_TEST_DATABASE=""</strong>
-<strong>DB_TEST_USERNAME=""</strong>
-<strong>DB_TEST_PASSWORD=""</strong>
 </code></pre>
 
 <pre><code>
